@@ -2,33 +2,49 @@
 import { Dropdown, Space } from "antd";
 import React, { useState } from "react";
 import MyModal from "./MyModal";
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector, useDispatch } from "react-redux";
 import { setData } from "../productSlice";
 export default function Header() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const products = useSelector((state) => state.products.value);
-  const dispatch = useDispatch()
-
+  const dispatch = useDispatch();
+  const [btnTitle, setBtnTitle] = useState("Sort by price");
   function sortByPriceAscending() {
     let newArr = products.slice().sort((a, b) => a.price - b.price);
     dispatch(setData(newArr));
   }
   function sortByPriceDescending() {
-    let newArr =  products.slice().sort((a, b) => b.price - a.price);
+    let newArr = products.slice().sort((a, b) => b.price - a.price);
     dispatch(setData(newArr));
   }
- 
-  
+
   const items = [
     {
-      label: <span onClick={()=>sortByPriceAscending()}>Ucuzdan bahya</span>,
-      key: '0',
+      label: (
+        <span
+          onClick={() => {
+            sortByPriceAscending();
+            setBtnTitle("Ucuzdan bahaya");
+          }}
+        >
+          Ucuzdan bahaya
+        </span>
+      ),
+      key: "0",
     },
     {
-      label: <span onClick={()=>sortByPriceDescending()}>bahadan ucuza</span>,
-      key: '1',
+      label: (
+        <span
+          onClick={() => {
+            sortByPriceDescending();
+            setBtnTitle("Bahadan ucuza");
+          }}
+        >
+          Bahadan ucuza
+        </span>
+      ),
+      key: "1",
     },
- 
   ];
   return (
     <>
@@ -36,7 +52,6 @@ export default function Header() {
       <div className="bg-white">
         <div className="border py-3 px-6">
           <div className="flex justify-between">
-         
             <div className="ml-6 flex flex-1 gap-x-3">
               <div className="flex cursor-pointer select-none items-center gap-x-2 rounded-md border bg-[#4094F7] py-2 px-4 text-white hover:bg-blue-500">
                 <Dropdown
@@ -46,11 +61,10 @@ export default function Header() {
                   trigger={["click"]}
                 >
                   <a onClick={(e) => e.preventDefault()}>
-                    <Space>Sort by price</Space>
+                    <Space>{btnTitle}</Space>
                   </a>
                 </Dropdown>
               </div>
-            
             </div>
             <div className="ml-2 flex">
               <div className="flex cursor-pointer items-center gap-x-1 rounded-md py-2 px-4 hover:bg-gray-100">
